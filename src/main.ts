@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 // import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { ARButton } from 'three/examples/jsm/webxr/ARButton.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js'
-import { RoundedBoxGeometry, XRControllerModelFactory } from 'three/examples/jsm/Addons.js';
+import { RGBELoader, RoundedBoxGeometry, XRControllerModelFactory } from 'three/examples/jsm/Addons.js';
 import { DragControls } from 'three/examples/jsm/Addons.js';
 
 
@@ -50,7 +50,7 @@ tableBase.position.y = 1.5;
 scene.add(tableBase);
 
 // #region Table legs
-const legGeometry = new RoundedBoxGeometry(0.5, 1.2, 0.5, 1, .13);
+const legGeometry = new RoundedBoxGeometry(0.5, 2.5, 0.5, 1, .13);
 const legPositions: [number, number, number][] = [
   [-3.75, 0, 1.15],
   [3.75, 0, 1.15],
@@ -58,10 +58,10 @@ const legPositions: [number, number, number][] = [
   [3.75, 0, -1.15]
 ];
 legPositions.forEach(pos => {
-  const leg = new Three.Mesh(legGeometry, tableBaseMaterial);
-  leg.castShadow = true;
-  leg.position.set(pos[0], -1.5, pos[2]);
-  tableBase.add(leg);
+  const legMesh = new Three.Mesh(legGeometry, tableBaseMaterial);
+  legMesh.castShadow = true;
+  legMesh.position.set(pos[0], -1.5, pos[2]);
+  tableBase.add(legMesh);
   // scene.add(leg);
 });
 
@@ -69,12 +69,12 @@ legPositions.forEach(pos => {
 const pointLight = new Three.PointLight(0xffffff, 9, 100);
 pointLight.position.set(0, 5, 2);
 pointLight.castShadow = true;
-scene.add(pointLight);
+// scene.add(pointLight);
 
 const secondaryLight = new Three.PointLight(0xffffff, 9, 100);
 secondaryLight.position.set(7, 1, 2);
 secondaryLight.castShadow = true;
-scene.add(secondaryLight);
+// scene.add(secondaryLight);
 
 // #region Camera
 const camera = new Three.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -94,6 +94,25 @@ tableBaseFolder.add(tableBaseMaterial, 'transmission', 0, 1);
 tableBaseFolder.add(tableBaseMaterial, 'thickness', 0, 10);
 tableBaseFolder.add(tableBaseMaterial, 'ior', 1, 2);
 tableBaseFolder.open();
+
+tableBaseFolder.addFolder('Table Base Position');
+tableBaseFolder.add(tableBase.position, 'x', -10, 10);
+tableBaseFolder.add(tableBase.position, 'y', -10, 10);
+tableBaseFolder.add(tableBase.position, 'z', -10, 10);
+
+// #region HDR environment map
+
+const hdr = 'https://sbcode.net/img/rustig_koppie_puresky_1k.hdr'
+
+let environmentTexture: Three.DataTexture
+
+new RGBELoader().load(hdr, (texture) => {
+  environmentTexture = texture
+  environmentTexture.mapping = Three.EquirectangularReflectionMapping
+  scene.environment = environmentTexture
+  scene.background = environmentTexture
+  scene.environmentIntensity = 1 // added in Three r163
+})
 
 let increasing = true;
 
