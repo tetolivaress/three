@@ -10,7 +10,7 @@ const { scene, renderer } = sceneRenderer(Camera);
 const size = new Box3().setFromObject(Box).getSize(new Vector3());
 console.log(size);
 
-Camera.lookAt(Box.position)
+// Camera.lookAt(Box.position)
 
 const { handleFirstController, handleSecondController } = setupXRControllers(scene, renderer);
 
