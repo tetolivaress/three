@@ -7,6 +7,7 @@ export const sceneRenderer = (camera: PerspectiveCamera) => {
   renderer.setSize(window.innerWidth, window.innerHeight)
   renderer.shadowMap.enabled = true
   renderer.shadowMap.type = VSMShadowMap
+  renderer.xr.enabled = true
   document.body.appendChild(renderer.domElement)
   document.body.appendChild(XRButton.createButton(renderer));
 
