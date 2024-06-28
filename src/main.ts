@@ -26,7 +26,7 @@ BoxFolder.add(Box.scale, 'y', .01, 32).name('Depth');
 const objects = [Floor, Box, spotLight, secondLight];
 scene.add(...objects);
 
-new OrbitControls(Camera, renderer.domElement);
+const orbitControls = new OrbitControls(Camera, renderer.domElement);
 
 renderer.xr.addEventListener('sessionstart', () => {
   if (renderer.xr.isPresenting) {
@@ -40,7 +40,7 @@ renderer.xr.addEventListener('sessionend', () => {
 
 const animate = () => {
   renderer.setAnimationLoop(() => {
-    
+    orbitControls.update();
     handleFirstController();
     handleSecondController();
 
