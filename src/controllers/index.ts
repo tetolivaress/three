@@ -1,0 +1,1 @@
+export { setupXRControllers } from './XRControllers';
