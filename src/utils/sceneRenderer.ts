@@ -1,5 +1,5 @@
 import { Scene, WebGLRenderer, VSMShadowMap, PerspectiveCamera } from 'three';
-import { XRButton } from 'three/examples/jsm/webxr/XRButton.js'
+import { ARButton } from 'three/examples/jsm/webxr/ARButton.js'
 
 export const sceneRenderer = (camera: PerspectiveCamera) => {
   const scene = new Scene();
@@ -8,7 +8,7 @@ export const sceneRenderer = (camera: PerspectiveCamera) => {
   renderer.shadowMap.enabled = true
   renderer.shadowMap.type = VSMShadowMap
   document.body.appendChild(renderer.domElement)
-  document.body.appendChild(XRButton.createButton(renderer));
+  document.body.appendChild(ARButton.createButton(renderer));
 
   // #region Handle window resizing
   window.addEventListener('resize', () => {
