@@ -1,7 +1,7 @@
 import { sceneRenderer, spotLight, secondLight, Camera } from './utils';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js'
 import { Floor, Box } from './models';
-import { setupXRControllers } from './controllers';
+// import { setupXRControllers } from './controllers';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { Box3, Clock, Vector3 } from 'three';
 import GrabVR from 'grabvr'
