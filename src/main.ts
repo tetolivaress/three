@@ -1,5 +1,5 @@
 import { sceneRenderer, spotLight, secondLight, Camera, pointLight, spotLightHelper } from './utils'
-import { Floor, Box, Room } from './models'
+import { Floor, Box, Room, Table } from './models'
 import { setupXRControllers } from './controllers'
 import { OrbitControls } from 'three/examples/jsm/Addons.js'
 
@@ -9,7 +9,7 @@ const { handleFirstController, handleSecondController } = setupXRControllers(sce
 
 Box.scale.set(.3, .3, .3)
 
-const objects = [Floor, Box, spotLight, secondLight, pointLight, spotLightHelper, Room]
+const objects = [Floor, Box, spotLight, secondLight, pointLight, spotLightHelper, Room, Table]
 scene.add(...objects)
 
 const orbitControls = new OrbitControls(Camera, renderer.domElement)

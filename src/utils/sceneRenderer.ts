@@ -1,5 +1,4 @@
-import GUI from 'lil-gui';
-import { Scene, WebGLRenderer, VSMShadowMap, PerspectiveCamera, Color, Fog } from 'three';
+import { Scene, WebGLRenderer, VSMShadowMap, PerspectiveCamera, Color } from 'three';
 import { XRButton } from 'three/examples/jsm/webxr/XRButton.js'
 
 export const sceneRenderer = (camera: PerspectiveCamera) => {
