@@ -1,3 +1,4 @@
+import GUI from "lil-gui";
 import { PlaneGeometry, Mesh, MeshStandardMaterial, DoubleSide } from "three";
 
 const material = new MeshStandardMaterial({ side: DoubleSide })
@@ -7,6 +8,7 @@ Box.rotateX(-Math.PI / 2)
 Box.receiveShadow = true
 Box.castShadow = true
 Box.position.z = 0
+Box.position.y = 0.01
 
 const left = new Mesh(new PlaneGeometry(), material)
 left.rotateY(-Math.PI / 2)
@@ -39,6 +41,12 @@ Box.castShadow = true
 back.position.z = 0.5
 back.position.y = -0.5
 Box.add(back)
+
+const gui = new GUI();
+const BoxFolder = gui.addFolder('Box');
+BoxFolder.add(Box.scale, 'z', .01, 16).name('Height');
+BoxFolder.add(Box.scale, 'y', .01, 32).name('Depth');
+BoxFolder.add(Box.scale, 'x', .01, 32).name('Width');
 
 export { Box }
 

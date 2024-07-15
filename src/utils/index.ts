@@ -1,3 +1,4 @@
-export { spotLight, directionalLight, secondLight } from './lighting';
+import { SpotLight } from 'three';
+export { spotLight, directionalLight, secondLight, pointLight, spotLightHelper } from './lighting';
 export { Camera } from './camera';
 export { sceneRenderer } from './sceneRenderer';
