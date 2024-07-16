@@ -1,5 +1,6 @@
 import { sceneRenderer, spotLight, secondLight, Camera, pointLight, spotLightHelper } from './utils'
-import { Floor, Box, Room, Table } from './models'
+import { Floor, Box, Room } from './models'
+import { Table } from './models/Table'
 import { setupXRControllers } from './controllers'
 import { OrbitControls } from 'three/examples/jsm/Addons.js'
 
