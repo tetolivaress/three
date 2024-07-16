@@ -1,17 +1,16 @@
 import { sceneRenderer, spotLight, secondLight, Camera, pointLight, spotLightHelper } from './utils'
-import { Floor, Box, Room } from './models'
-import { Table } from './models/Table'
+import { Floor, Box, Room, Table } from './models'
 import { setupXRControllers } from './controllers'
 import { OrbitControls } from 'three/examples/jsm/Addons.js'
 
 const init = async () => {
   const { scene, renderer } = sceneRenderer(Camera)
-  const table = await Table()
+  Table().then((table) => scene.add(table))
   const { handleFirstController, handleSecondController } = setupXRControllers(scene, renderer)
 
   Box.scale.set(.3, .3, .3)
 
-  const objects = [Floor, Box, spotLight, secondLight, pointLight, spotLightHelper, Room, table]
+  const objects = [Floor, Box, spotLight, secondLight, pointLight, spotLightHelper, Room]
   scene.add(...objects)
 
   const orbitControls = new OrbitControls(Camera, renderer.domElement)
