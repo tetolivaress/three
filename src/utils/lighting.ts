@@ -68,15 +68,18 @@ directionalLight.shadow.camera.far = 20
 // spotLightFolder.add(spotLight, 'angle', 0, Math.PI / 3).name('Angle')
 // spotLightFolder.add(spotLight, 'penumbra', 0, 1).name('Penumbra')
 
-const pointLight = new PointLight(0xffffff, 1);
-pointLight.position.set(-5.96, 1.36, -4.92);
-pointLight.distance = 13, 46;
-pointLight.decay = 0.05;
-pointLight.intensity = 3.72;
-pointLight.castShadow = true;
-pointLight.shadow.radius = 20;
-pointLight.shadow.blurSamples = 20;
-pointLight.shadow.camera.far = 20;
+const pointLight = new PointLight(0xffffff, 1)
+pointLight.position.set(-5.96, 1.36, -4.92)
+pointLight.distance = 13, 46
+pointLight.decay = 0.05
+pointLight.intensity = 3.72
+pointLight.castShadow = true
+pointLight.shadow.radius = 20
+pointLight.shadow.blurSamples = 20
+pointLight.shadow.camera.far = 20
+// pointLight.shadow.mapSize.width = 2048
+// pointLight.shadow.mapSize.height = 2048
+pointLight.shadow.bias = -.1
 
 const pointLightHelper = new PointLightHelper(pointLight)
 pointLightHelper.visible = false

@@ -3,7 +3,9 @@ import { XRButton } from 'three/examples/jsm/webxr/XRButton.js'
 
 export const sceneRenderer = (camera: PerspectiveCamera) => {
   const scene = new Scene();
-  const renderer = new WebGLRenderer({ antialias: true })
+  const renderer = new WebGLRenderer({
+    antialias: true
+  })
   scene.background = new Color(0xe6ffe6)
   renderer.setSize(window.innerWidth, window.innerHeight)
   renderer.shadowMap.enabled = true
