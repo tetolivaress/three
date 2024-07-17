@@ -2,6 +2,7 @@ import { sceneRenderer, spotLight, secondLight, Camera, pointLight, spotLightHel
 import { Floor, Box, Room, Table } from './models'
 import { setupXRControllers } from './controllers'
 import { OrbitControls } from 'three/examples/jsm/Addons.js'
+import { AxesHelper } from 'three';
 
 const init = async () => {
   const { scene, renderer } = sceneRenderer(Camera)
@@ -10,7 +11,10 @@ const init = async () => {
 
   Box.scale.set(.3, .3, .3)
 
-  const objects = [Floor, Box, spotLight, secondLight, pointLight, spotLightHelper, Room]
+  // add axes helper
+  const axesHelper = new AxesHelper(5)
+
+  const objects = [Floor, Box, spotLight, secondLight, pointLight, spotLightHelper, Room, axesHelper]
   scene.add(...objects)
 
   const orbitControls = new OrbitControls(Camera, renderer.domElement)
@@ -19,12 +23,14 @@ const init = async () => {
     if (renderer.xr.isPresenting) {
       Floor.visible = false
       // Room.visible = false
+      axesHelper.visible = false
     }
   })
 
   renderer.xr.addEventListener('sessionend', () => {
     Floor.visible = true
     Room.visible = true
+    axesHelper.visible = false
   })
 
   const animate = () => {
