@@ -8,7 +8,7 @@ Box.rotateX(-Math.PI / 2)
 Box.receiveShadow = true
 Box.castShadow = true
 Box.position.z = 0
-Box.position.y = 0.01
+Box.position.y = 1
 
 const left = new Mesh(new PlaneGeometry(), material)
 left.rotateY(-Math.PI / 2)

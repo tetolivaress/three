@@ -1,4 +1,4 @@
-import { DirectionalLight, SpotLight, PointLight, SpotLightHelper } from 'three'
+import { DirectionalLight, SpotLight, PointLight, SpotLightHelper, PointLightHelper } from 'three'
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js'
 
 const spotLight = new SpotLight(0xffffff, 500)
@@ -26,7 +26,7 @@ spotLightFolder.addColor(data, 'lightColor').onChange(() => {
 })
 spotLightFolder.add(spotLight, 'intensity', 0, Math.PI * 10)
 
-const spotLightFolderControls = spotLightFolder.addFolder('SpotLoght Controls')
+const spotLightFolderControls = spotLightFolder.addFolder('SpotLight Controls')
 spotLightFolderControls.add(spotLight.position, 'x', -10, 10).onChange(() => {
   spotLightHelper.update()
 })
@@ -69,19 +69,39 @@ directionalLight.shadow.camera.far = 20
 // spotLightFolder.add(spotLight, 'penumbra', 0, 1).name('Penumbra')
 
 const pointLight = new PointLight(0xffffff, 1);
-pointLight.position.set(0, 10, 0);
+pointLight.position.set(-5.96, 1.36, -4.92);
+pointLight.distance = 13, 46;
+pointLight.decay = 0.05;
+pointLight.intensity = 3.72;
 pointLight.castShadow = true;
 pointLight.shadow.radius = 20;
 pointLight.shadow.blurSamples = 20;
 pointLight.shadow.camera.far = 20;
 
-// const pointLightFolder = gui.addFolder('Point Light')
-// pointLightFolder.add(pointLight.position, 'x', -50, 50).name('X')
-// pointLightFolder.add(pointLight.position, 'y', -50, 50).name('Y')
-// pointLightFolder.add(pointLight.position, 'z', -50, 50).name('Z')
-// pointLightFolder.add(pointLight, 'intensity', 0, 1).name('Intensity')
-// pointLightFolder.add(pointLight, 'distance', 0, 100).name('Distance')
-// pointLightFolder.add(pointLight, 'decay', 0, 2).name('Decay')
-// pointLightFolder.add(pointLight, 'power', 0, 2).name('Power')
+const pointLightHelper = new PointLightHelper(pointLight)
+pointLightHelper.visible = false
+
+const pointLightFolder = gui.addFolder('Point Light')
+const pointLightFolderControls = pointLightFolder.addFolder('Point Light Controls')
+pointLightFolderControls.add(pointLight.position, 'x', -10, 10).onChange(() => {
+  pointLightHelper.update()
+})
+pointLightFolderControls.add(pointLight.position, 'y', -10, 10).onChange(() => {
+  pointLightHelper.update()
+})
+pointLightFolderControls.add(pointLight.position, 'z', -10, 10).onChange(() => {
+  pointLightHelper.update()
+})
+pointLightFolderControls.add(pointLight, 'distance', 0, 20).onChange(() => {
+  pointLightHelper.update()
+})
+pointLightFolderControls.add(pointLight, 'decay', 0, 10).onChange(() => {
+  pointLightHelper.update()
+})
+pointLightFolderControls.add(pointLight, 'intensity', 0, 10)
+pointLightFolderControls.add(pointLightHelper, 'visible').name('Helper Visible')
+pointLightFolderControls.close()
+
+
 
 export { spotLight, directionalLight, secondLight, pointLight, spotLightHelper }
