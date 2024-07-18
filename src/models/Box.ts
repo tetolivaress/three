@@ -1,53 +1,44 @@
 import GUI from "lil-gui";
-import { PlaneGeometry, Mesh, MeshPhysicalMaterial, DoubleSide, TextureLoader } from "three";
+import { PlaneGeometry, Mesh, MeshPhysicalMaterial, DoubleSide } from "three";
 
 const material = new MeshPhysicalMaterial({
     roughness: 0.5,
     metalness: 0.9,
     clearcoat: 1,
     clearcoatRoughness: 0.5,
-    side: DoubleSide,
-    map: new TextureLoader().load('texture/colorMap.jpg')
+    side: DoubleSide
 });
 
 const Box = new Mesh(new PlaneGeometry(1, 1, 1), material)
 Box.rotateX(-Math.PI / 2)
-Box.receiveShadow = true
-Box.castShadow = true
 Box.position.z = 0
 Box.position.y = 1
 
 const left = new Mesh(new PlaneGeometry(), material)
 left.rotateY(-Math.PI / 2)
-left.receiveShadow = true
-Box.castShadow = true
 left.position.x = -0.5
 left.position.z = 0.5
-Box.add(left)
 
 const right = new Mesh(new PlaneGeometry(), material)
 right.rotateY(Math.PI / 2)
-right.receiveShadow = true
-Box.castShadow = true
 right.position.x = 0.5
 right.position.z = 0.5
-Box.add(right)
 
 const front = new Mesh(new PlaneGeometry(), material)
 front.rotateX(Math.PI / 2)
-front.receiveShadow = true
-Box.castShadow = true
 front.position.z = 0.5
 front.position.y = 0.5
-Box.add(front)
 
 const back = new Mesh(new PlaneGeometry(), material)
 back.rotateX(-Math.PI / 2)
-back.receiveShadow = true
-Box.castShadow = true
 back.position.z = 0.5
 back.position.y = -0.5
-Box.add(back)
+
+const sides = [left, right, front, back]
+
+sides.forEach((side: Mesh) => {
+  Box.add(side)
+})
 
 const gui = new GUI();
 const BoxFolder = gui.addFolder('Box');

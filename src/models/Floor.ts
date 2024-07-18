@@ -11,8 +11,6 @@ const material = new MeshStandardMaterial({
 
 const Floor = new Mesh(new PlaneGeometry(15, 15), material)
 Floor.rotateX(-Math.PI / 2)
-Floor.receiveShadow = true
-Floor.castShadow = true
 
 // Floor.material.envMapIntensity = 0
 const data = { environment: true, background: true, mapEnabled: false, Floor: true }

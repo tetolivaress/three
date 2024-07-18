@@ -1,4 +1,4 @@
-import { sceneRenderer, spotLight, secondLight, Camera, pointLight, spotLightHelper } from './utils'
+import { sceneRenderer, spotLight, secondLight, Camera, pointLight } from './utils'
 import { Floor, Box, Room, Table } from './models'
 import { setupXRControllers } from './controllers'
 import { OrbitControls } from 'three/examples/jsm/Addons.js'
@@ -14,8 +14,14 @@ const init = async () => {
   // add axes helper
   const axesHelper = new AxesHelper(5)
 
-  const objects = [Floor, Box, spotLight, secondLight, pointLight, spotLightHelper, Room, axesHelper]
-  scene.add(...objects)
+  const objects = [Floor, Box, Room]
+  objects.forEach((object) => {
+    object.castShadow = true
+    object.receiveShadow = true
+  })
+  const lights = [spotLight, secondLight, pointLight]
+  const sceneObjects = [...objects, ...lights, axesHelper]
+  scene.add(...sceneObjects)
 
   const orbitControls = new OrbitControls(Camera, renderer.domElement)
 
@@ -35,6 +41,9 @@ const init = async () => {
 
   const animate = () => {
     renderer.setAnimationLoop(() => {
+      // rotate the box
+      Box.rotation.x += 0.01
+      Box.rotation.y += 0.01
       orbitControls.update()
       handleFirstController()
       handleSecondController()

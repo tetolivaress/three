@@ -3,14 +3,10 @@ import { BoxGeometry, MeshStandardMaterial, DoubleSide, Mesh, TextureLoader } fr
 const loader = new TextureLoader()
 const pictureTexture = new MeshStandardMaterial({ map: loader.load('texture/avila.jpg') })
 
-
-
 const geometry = new BoxGeometry(3.1, .1, 5.2)
 const material = new MeshStandardMaterial({ color: 0xffffff, side: DoubleSide })
 
 const Room = new Mesh(geometry, material)
-Room.castShadow = true
-Room.receiveShadow = true
 
 const left = new Mesh(new BoxGeometry(.1, 2.1, 5.2), material)
 Room.add(left)

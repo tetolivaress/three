@@ -5,7 +5,6 @@ const spotLight = new SpotLight(0xffffff, 500)
 spotLight.position.set(1.36, 1.62, 5.56)
 spotLight.angle = 0.5
 spotLight.penumbra = 0.5
-spotLight.castShadow = true
 spotLight.shadow.radius = 20
 spotLight.shadow.blurSamples = 20
 spotLight.shadow.camera.far = 20
@@ -73,7 +72,6 @@ pointLight.position.set(-1,0,0)
 pointLight.distance = 13, 46
 pointLight.decay = 0.05
 pointLight.intensity = 3.72
-pointLight.castShadow = true
 pointLight.shadow.radius = 20
 pointLight.shadow.blurSamples = 20
 pointLight.shadow.camera.far = 20

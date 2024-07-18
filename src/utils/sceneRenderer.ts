@@ -1,4 +1,4 @@
-import { Scene, WebGLRenderer, VSMShadowMap, PerspectiveCamera, Color } from 'three';
+import { Scene, WebGLRenderer, VSMShadowMap, PerspectiveCamera, Color, ACESFilmicToneMapping } from 'three';
 import { XRButton } from 'three/examples/jsm/webxr/XRButton.js'
 
 export const sceneRenderer = (camera: PerspectiveCamera) => {
@@ -10,6 +10,8 @@ export const sceneRenderer = (camera: PerspectiveCamera) => {
   renderer.setSize(window.innerWidth, window.innerHeight)
   renderer.shadowMap.enabled = true
   renderer.shadowMap.type = VSMShadowMap
+  renderer.toneMapping = ACESFilmicToneMapping
+  renderer.toneMappingExposure = 3
   renderer.xr.enabled = true
   document.body.appendChild(renderer.domElement)
   document.body.appendChild(XRButton.createButton(renderer));
