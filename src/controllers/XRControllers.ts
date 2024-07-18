@@ -1,4 +1,4 @@
-import { Scene, WebGLRenderer, Raycaster, Matrix4, Vector3 } from 'three';
+import { Scene, WebGLRenderer, Raycaster, Matrix4, Vector3, Quaternion, BufferGeometry, LineBasicMaterial, Line } from 'three';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
 // #region Raycaster
@@ -7,6 +7,8 @@ const tempMatrix = new Matrix4();
 let selectedObject: any = null;
 let initialControllerPosition = new Vector3();
 let initialObjectPosition = new Vector3();
+let initialControllerQuaternion = new Quaternion();
+let initialObjectQuaternion = new Quaternion();
 
 export function setupXRControllers(scene: Scene, renderer: WebGLRenderer) {
   const controller1 = renderer.xr.getController(0);
@@ -24,42 +26,66 @@ export function setupXRControllers(scene: Scene, renderer: WebGLRenderer) {
   scene.add(controllerGrip1);
   scene.add(controllerGrip2);
 
+  // #region Ray Visualization
+  const createRay = () => {
+    const geometry = new BufferGeometry().setFromPoints([new Vector3(0, 0, 0), new Vector3(0, 0, -1)]);
+    const material = new LineBasicMaterial({ color: 0x808080 }); // Gray color
+    return new Line(geometry, material);
+  };
+
+  const ray1 = createRay();
+  const ray2 = createRay();
+  controller1.add(ray1);
+  controller2.add(ray2);
+
+  const updateRay = (ray: Line) => {
+    ray.scale.z = 10; // Adjust the length of the ray
+  };
+
   // #region Event handling for controllers
   const handleController = (controller: any) => {
     tempMatrix.identity().extractRotation(controller.matrixWorld);
     raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
     raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
+
+    const ray = controller.children[0];
+    updateRay(ray);
   };
 
   const onSelectStart = (event: any) => {
-      const controller = event.target;
+    const controller = event.target;
 
-      tempMatrix.identity().extractRotation(controller.matrixWorld);
-      raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
-      raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
+    tempMatrix.identity().extractRotation(controller.matrixWorld);
+    raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
+    raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
 
-      const intersects = raycaster.intersectObjects(scene.children);
+    const intersects = raycaster.intersectObjects(scene.children);
 
-      if (intersects.length > 0) {
-          selectedObject = intersects[0].object;
-          selectedObject.material.color.set(0x0000ff); // Change color on selection
-          initialControllerPosition.copy(controller.position);
-          initialObjectPosition.copy(selectedObject.position);
-      }
+    if (intersects.length > 0) {
+      selectedObject = intersects[0].object;
+      selectedObject.material.color.set(0x0000ff); // Change color on selection
+      initialControllerPosition.copy(controller.position);
+      initialObjectPosition.copy(selectedObject.position);
+      initialControllerQuaternion.copy(controller.quaternion);
+      initialObjectQuaternion.copy(selectedObject.quaternion);
+    }
   };
 
   const onSelectEnd = () => {
-      if (selectedObject) {
-          selectedObject.material.color.set(0x00ff00); // Reset color
-          selectedObject = null;
-      }
+    if (selectedObject) {
+      selectedObject.material.color.set(0x00ff00); // Reset color
+      selectedObject = null;
+    }
   };
 
   const onSelectMove = (controller: any) => {
-      if (selectedObject) {
-          const deltaPosition = new Vector3().subVectors(controller.position, initialControllerPosition);
-          selectedObject.position.addVectors(initialObjectPosition, deltaPosition);
-      }
+    if (selectedObject) {
+      const deltaPosition = new Vector3().subVectors(controller.position, initialControllerPosition);
+      selectedObject.position.addVectors(initialObjectPosition, deltaPosition);
+
+      const deltaQuaternion = new Quaternion().multiplyQuaternions(controller.quaternion, initialControllerQuaternion.clone().invert());
+      selectedObject.quaternion.multiplyQuaternions(deltaQuaternion, initialObjectQuaternion);
+    }
   };
 
   const handleFirstController = () => handleController(controller1);

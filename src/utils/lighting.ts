@@ -69,7 +69,7 @@ directionalLight.shadow.camera.far = 20
 // spotLightFolder.add(spotLight, 'penumbra', 0, 1).name('Penumbra')
 
 const pointLight = new PointLight(0xffffff, 1)
-pointLight.position.set(-5.96, 1.36, -4.92)
+pointLight.position.set(-1,0,0)
 pointLight.distance = 13, 46
 pointLight.decay = 0.05
 pointLight.intensity = 3.72
@@ -79,7 +79,8 @@ pointLight.shadow.blurSamples = 20
 pointLight.shadow.camera.far = 20
 // pointLight.shadow.mapSize.width = 2048
 // pointLight.shadow.mapSize.height = 2048
-pointLight.shadow.bias = -.1
+// pointLight.shadow.bias = -.0001
+pointLight.shadow.normalBias = 0.2
 
 const pointLightHelper = new PointLightHelper(pointLight)
 pointLightHelper.visible = false
@@ -101,8 +102,12 @@ pointLightFolderControls.add(pointLight, 'distance', 0, 20).onChange(() => {
 pointLightFolderControls.add(pointLight, 'decay', 0, 10).onChange(() => {
   pointLightHelper.update()
 })
+
+// pointLightFolderControls shadow.normalBias
+pointLightFolderControls.add(pointLight.shadow, 'normalBias', -1, 1).onChange(() => {
+  pointLightHelper.update()
+})
 pointLightFolderControls.add(pointLight, 'intensity', 0, 10)
-pointLightFolderControls.add(pointLightHelper, 'visible').name('Helper Visible')
 pointLightFolderControls.close()
 
 

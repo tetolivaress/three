@@ -1,7 +1,14 @@
 import GUI from "lil-gui";
-import { PlaneGeometry, Mesh, MeshStandardMaterial, DoubleSide } from "three";
+import { PlaneGeometry, Mesh, MeshPhysicalMaterial, DoubleSide, TextureLoader } from "three";
 
-const material = new MeshStandardMaterial({ side: DoubleSide })
+const material = new MeshPhysicalMaterial({
+    roughness: 0.5,
+    metalness: 0.9,
+    clearcoat: 1,
+    clearcoatRoughness: 0.5,
+    side: DoubleSide,
+    map: new TextureLoader().load('texture/colorMap.jpg')
+});
 
 const Box = new Mesh(new PlaneGeometry(1, 1, 1), material)
 Box.rotateX(-Math.PI / 2)
@@ -47,6 +54,9 @@ const BoxFolder = gui.addFolder('Box');
 BoxFolder.add(Box.scale, 'z', .01, 16).name('Height');
 BoxFolder.add(Box.scale, 'y', .01, 32).name('Depth');
 BoxFolder.add(Box.scale, 'x', .01, 32).name('Width');
+BoxFolder.add(Box.position, 'x', -16, 16).name('Position X');
+BoxFolder.add(Box.position, 'y', -16, 16).name('Position Y');
+BoxFolder.add(Box.position, 'z', -16, 16).name('Position Z');
 
 export { Box }
 
