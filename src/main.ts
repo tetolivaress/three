@@ -1,20 +1,22 @@
 import { sceneRenderer, spotLight, secondLight, Camera, pointLight } from './utils'
-import { Floor, Box, Room, Table } from './models'
+import { Floor, Room, Table, Cube } from './models'
 import { setupXRControllers } from './controllers'
 import { OrbitControls } from 'three/examples/jsm/Addons.js'
-import { AxesHelper } from 'three';
+import { AxesHelper, Clock } from 'three';
+import { Physics } from './utils/physics';
 
 const init = async () => {
   const { scene, renderer } = sceneRenderer(Camera)
   Table().then((table) => scene.add(table))
   const { handleFirstController, handleSecondController } = setupXRControllers(scene, renderer)
+  const { dynamicBodies, world } = await Physics(Cube)
 
-  Box.scale.set(.3, .3, .3)
+  // Box.scale.set(.3, .3, .3)
 
   // add axes helper
   const axesHelper = new AxesHelper(5)
 
-  const objects = [Floor, Box, Room]
+  const objects = [Floor, Cube, Room]
   objects.forEach((object) => {
     object.castShadow = true
     object.receiveShadow = true
@@ -39,11 +41,19 @@ const init = async () => {
     axesHelper.visible = false
   })
 
+  const clock = new Clock()
+  let delta
+
   const animate = () => {
     renderer.setAnimationLoop(() => {
-      // rotate the box
-      Box.rotation.x += 0.01
-      Box.rotation.y += 0.01
+      delta = clock.getDelta()
+      world.timestep = Math.min(delta, 0.1)
+      world.step()
+      for (let i = 0, n = dynamicBodies.length; i < n; i++) {
+        dynamicBodies[i][0].position.copy(dynamicBodies[i][1].translation())
+        dynamicBodies[i][0].quaternion.copy(dynamicBodies[i][1].rotation())
+      }
+
       orbitControls.update()
       handleFirstController()
       handleSecondController()

@@ -9,7 +9,7 @@ const material = new MeshPhysicalMaterial({
     side: DoubleSide
 });
 
-const Box = new Mesh(new PlaneGeometry(1, 1, 1), material)
+const Box = new Mesh(new PlaneGeometry(.3, .3, .3), material)
 Box.rotateX(-Math.PI / 2)
 Box.position.z = 0
 Box.position.y = 1
