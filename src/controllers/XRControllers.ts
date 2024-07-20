@@ -1,4 +1,5 @@
-import { Scene, WebGLRenderer, Raycaster, Matrix4, Vector3, Quaternion, BufferGeometry, LineBasicMaterial, Line } from 'three';
+import RAPIER from '@dimforge/rapier3d-compat';
+import { Scene, WebGLRenderer, Raycaster, Matrix4, Vector3, Quaternion, BufferGeometry, LineBasicMaterial, Line, Object3D } from 'three';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
 // #region Raycaster
@@ -9,6 +10,7 @@ let initialControllerPosition = new Vector3();
 let initialObjectPosition = new Vector3();
 let initialControllerQuaternion = new Quaternion();
 let initialObjectQuaternion = new Quaternion();
+let selectedDynamic: [Object3D, RAPIER.RigidBody][] = []
 
 export function setupXRControllers(scene: Scene, renderer: WebGLRenderer) {
   const controller1 = renderer.xr.getController(0);
@@ -43,7 +45,8 @@ export function setupXRControllers(scene: Scene, renderer: WebGLRenderer) {
   };
 
   // #region Event handling for controllers
-  const handleController = (controller: any) => {
+  const handleController = (controller: any, dynamicBody: [Object3D, RAPIER.RigidBody][]) => {
+    selectedDynamic = dynamicBody;
     tempMatrix.identity().extractRotation(controller.matrixWorld);
     raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
     raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
@@ -69,6 +72,11 @@ export function setupXRControllers(scene: Scene, renderer: WebGLRenderer) {
       initialControllerQuaternion.copy(controller.quaternion);
       initialObjectQuaternion.copy(selectedObject.quaternion);
     }
+
+    if (selectedDynamic) {
+      selectedDynamic[0][1].setTranslation({ x: selectedObject.position.x, y: selectedObject.position.y, z: selectedObject.position.z }, true);
+      selectedDynamic[0][1].setRotation({ x: selectedObject.quaternion.x, y: selectedObject.quaternion.y, z: selectedObject.quaternion.z, w: selectedObject.quaternion.w }, true);
+    }
   };
 
   const onSelectEnd = () => {
@@ -86,10 +94,15 @@ export function setupXRControllers(scene: Scene, renderer: WebGLRenderer) {
       const deltaQuaternion = new Quaternion().multiplyQuaternions(controller.quaternion, initialControllerQuaternion.clone().invert());
       selectedObject.quaternion.multiplyQuaternions(deltaQuaternion, initialObjectQuaternion);
     }
+
+    if (selectedDynamic) {
+      selectedDynamic[0][1].setTranslation({ x: selectedObject.position.x, y: selectedObject.position.y, z: selectedObject.position.z }, true);
+      selectedDynamic[0][1].setRotation({ x: selectedObject.quaternion.x, y: selectedObject.quaternion.y, z: selectedObject.quaternion.z, w: selectedObject.quaternion.w }, true);
+    }
   };
 
-  const handleFirstController = () => handleController(controller1);
-  const handleSecondController = () => handleController(controller2);
+  const handleFirstController = (dynamicBodies: [Object3D, RAPIER.RigidBody][]) => handleController(controller1, dynamicBodies);
+  const handleSecondController = (dynamicBodies: [Object3D, RAPIER.RigidBody][]) => handleController(controller2, dynamicBodies);
 
   controller1.addEventListener('selectstart', onSelectStart);
   controller1.addEventListener('selectend', onSelectEnd);

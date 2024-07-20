@@ -7,7 +7,7 @@ export const Physics = async (object: Mesh | Object3D) => {
   const world = new RAPIER.World(gravity)
   const dynamicBodies: [Object3D, RAPIER.RigidBody][] = []
 
-  const boxShape = RAPIER.ColliderDesc.cuboid(.3, .3, .3).setMass(1).setRestitution(1.1)
+  const boxShape = RAPIER.ColliderDesc.cuboid(.3, .3, .3).setMass(1).setRestitution(1)
   const boxBody = world.createRigidBody(RAPIER.RigidBodyDesc.dynamic().setTranslation(0, 1, 0).setCanSleep(false))
 
   world.createCollider(boxShape, boxBody)
