@@ -55,8 +55,8 @@ const init = async () => {
       }
 
       orbitControls.update()
-      handleFirstController()
-      handleSecondController()
+      handleFirstController(dynamicBodies)
+      handleSecondController(dynamicBodies)
       renderer.render(scene, Camera)
     })
   }
