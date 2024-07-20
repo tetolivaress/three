@@ -72,11 +72,6 @@ export function setupXRControllers(scene: Scene, renderer: WebGLRenderer) {
       initialControllerQuaternion.copy(controller.quaternion)
       initialObjectQuaternion.copy(selectedObject.quaternion)
     }
-
-    if (selectedDynamic) {
-      selectedDynamic[0][1]
-        .setTranslation(new RAPIER.Vector3(selectedObject.position.x, selectedObject.position.y, selectedObject.position.z), true)
-    }
   }
 
   const onSelectEnd = () => {
@@ -93,6 +88,11 @@ export function setupXRControllers(scene: Scene, renderer: WebGLRenderer) {
 
       const deltaQuaternion = new Quaternion().multiplyQuaternions(controller.quaternion, initialControllerQuaternion.clone().invert())
       selectedObject.quaternion.multiplyQuaternions(deltaQuaternion, initialObjectQuaternion)
+    }
+
+    if (selectedDynamic) {
+      selectedDynamic[0][1].setTranslation({ x: selectedObject.position.x, y: selectedObject.position.y, z: selectedObject.position.z }, true)
+      selectedDynamic[0][1].setRotation({ x: selectedObject.quaternion.x, y: selectedObject.quaternion.y, z: selectedObject.quaternion.z, w: selectedObject.quaternion.w }, true)
     }
   }
 
