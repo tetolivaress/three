@@ -20,12 +20,7 @@ const init = async () => {
   const axesHelper = new AxesHelper(5)
   
   const planes = new XRPlanes(renderer)
-  planes.addEventListener('added', () => {
-
-    const walls = planes.children
-    Box.position.set(walls[5].position.x, walls[5].position.y + 1, walls[5].position.z)
-    scene.add(Box)
-  })
+  scene.add(planes)
 
 
 
