@@ -1,5 +1,5 @@
 import { Scene, WebGLRenderer, VSMShadowMap, PerspectiveCamera, Color, ACESFilmicToneMapping } from 'three';
-import { ARButton } from 'three/examples/jsm/webxr/ARButton.js'
+import { XRButton } from 'three/examples/jsm/webxr/XRButton.js'
 
 export const sceneRenderer = (camera: PerspectiveCamera) => {
   const scene = new Scene();
@@ -14,10 +14,7 @@ export const sceneRenderer = (camera: PerspectiveCamera) => {
   renderer.toneMappingExposure = 3
   renderer.xr.enabled = true
   document.body.appendChild(renderer.domElement)
-  document.body.appendChild(ARButton.createButton(
-    renderer,
-    { requiredFeatures: [ 'plane-detection' ] }
-  ));
+  document.body.appendChild(XRButton.createButton(renderer));
 
   // #region Handle window resizing
   window.addEventListener('resize', () => {
