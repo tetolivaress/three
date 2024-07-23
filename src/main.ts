@@ -19,21 +19,18 @@ const init = async () => {
   // add axes helper
   const axesHelper = new AxesHelper(5)
   
-  const planes = new XRPlanes(renderer).children
-  planes[0].visible = false
-  planes[1].visible = true
-  planes[2].visible = false
-  planes[3].visible = true
-  planes[4].visible = false
-  planes[5].visible = true
+  const planes = new XRPlanes(renderer)
+  planes.addEventListener('added', () => {
 
-  Box.position.set(planes[5].position.x, planes[5].position.y + 1, planes[5].position.z)
-
-  scene.add(...planes)
+    const walls = planes.children
+    Box.position.set(walls[5].position.x, walls[5].position.y + 1, walls[5].position.z)
+    scene.add(Box)
+  })
 
 
 
-  const objects = [Floor, Cube, Room, Box]
+
+  const objects = [Floor, Cube, Room]
   objects.forEach((object) => {
     object.castShadow = true
     object.receiveShadow = true
