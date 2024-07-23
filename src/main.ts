@@ -1,5 +1,5 @@
 import { sceneRenderer, spotLight, secondLight, Camera, pointLight } from './utils'
-import { Floor, Room, Table, Cube, Box } from './models'
+import { Floor, Room, Table, Cube } from './models'
 import { setupXRControllers } from './controllers'
 import { OrbitControls } from 'three/examples/jsm/Addons.js'
 import { AxesHelper, Clock } from 'three';
