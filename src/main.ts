@@ -4,13 +4,13 @@ import { setupXRControllers } from './controllers'
 import { OrbitControls } from 'three/examples/jsm/Addons.js'
 import { AxesHelper, Clock } from 'three';
 import { Physics } from './utils/physics';
-import { XRPlanes } from 'three/examples/jsm/Addons.js';
-import { ARButton } from 'three/addons/webxr/ARButton.js';
+// import { XRPlanes } from 'three/examples/jsm/Addons.js';
+// import { ARButton } from 'three/addons/webxr/ARButton.js';
 
 const init = async () => {
   const { scene, renderer } = sceneRenderer(Camera)
   Table().then((table) => scene.add(table))
-  document.body.appendChild(ARButton.createButton(renderer))
+  // document.body.appendChild(ARButton.createButton(renderer))
   // const table = await Table()
   // scene.add(table)
   const { handleFirstController, handleSecondController } = setupXRControllers(scene, renderer)
@@ -21,11 +21,8 @@ const init = async () => {
   // add axes helper
   const axesHelper = new AxesHelper(5)
   
-  const planes = new XRPlanes(renderer)
-  scene.add(planes)
-
-
-
+  // const planes = new XRPlanes(renderer)
+  // scene.add(planes)
 
   const objects = [Floor, Cube, Room]
   objects.forEach((object) => {
