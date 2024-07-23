@@ -16,15 +16,10 @@ const init = async () => {
   const axesHelper = new AxesHelper(5)
 
   const xRPlanes = new XRPlanes(renderer)
-  xRPlanes.addEventListener('planes-detected', (event) => {
-    // add objects to different planes
-    const planes = event.target.children
-    planes.forEach((plane) => {
-      plane.attach(Cube)
-    })
-  })
+  const Cube2 = Cube.clone()
+  Cube2.position.set(0, 0, xRPlanes.position.z - 1)
 
-  const objects: Mesh<PlaneGeometry, MeshStandardMaterial, Object3DEventMap>[] = []
+  const objects: Mesh<PlaneGeometry, MeshStandardMaterial, Object3DEventMap>[] = [Floor, Room, Cube, Cube2]
   objects.forEach((object) => {
     object.castShadow = true
     object.receiveShadow = true
