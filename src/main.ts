@@ -4,10 +4,13 @@ import { setupXRControllers } from './controllers'
 import { OrbitControls } from 'three/examples/jsm/Addons.js'
 import { AxesHelper, Clock } from 'three';
 import { Physics } from './utils/physics';
+import { XRPlanes } from 'three/examples/jsm/Addons.js';
 
 const init = async () => {
   const { scene, renderer } = sceneRenderer(Camera)
   Table().then((table) => scene.add(table))
+  // const table = await Table()
+  // scene.add(table)
   const { handleFirstController, handleSecondController } = setupXRControllers(scene, renderer)
   const { dynamicBodies, world } = await Physics(Cube)
 
@@ -15,6 +18,18 @@ const init = async () => {
 
   // add axes helper
   const axesHelper = new AxesHelper(5)
+  
+  const planes = new XRPlanes(renderer).children
+  planes[0].visible = false
+  planes[1].visible = true
+  planes[2].visible = false
+  planes[3].visible = true
+  planes[4].visible = false
+  planes[5].visible = true
+
+  scene.add(...planes)
+
+
 
   const objects = [Floor, Cube, Room]
   objects.forEach((object) => {
