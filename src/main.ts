@@ -4,25 +4,20 @@ import { setupXRControllers } from './controllers'
 import { OrbitControls } from 'three/examples/jsm/Addons.js'
 import { AxesHelper, Clock } from 'three';
 import { Physics } from './utils/physics';
-// import { XRPlanes } from 'three/examples/jsm/Addons.js';
-// import { ARButton } from 'three/addons/webxr/ARButton.js';
+import { XRPlanes } from 'three/examples/jsm/Addons.js';
 
 const init = async () => {
   const { scene, renderer } = sceneRenderer(Camera)
   Table().then((table) => scene.add(table))
-  // document.body.appendChild(ARButton.createButton(renderer))
-  // const table = await Table()
-  // scene.add(table)
   const { handleFirstController, handleSecondController } = setupXRControllers(scene, renderer)
   const { dynamicBodies, world } = await Physics(Cube)
 
-  // Box.scale.set(.3, .3, .3)
-
-  // add axes helper
-  const axesHelper = new AxesHelper(5)
   
-  // const planes = new XRPlanes(renderer)
-  // scene.add(planes)
+  const axesHelper = new AxesHelper(5)
+
+  const xRPlanes = new XRPlanes(renderer)
+  scene.add(xRPlanes)
+
 
   const objects = [Floor, Cube, Room]
   objects.forEach((object) => {
@@ -38,7 +33,7 @@ const init = async () => {
   renderer.xr.addEventListener('sessionstart', () => {
     if (renderer.xr.isPresenting) {
       Floor.visible = false
-      Room.visible = false
+      // Room.visible = false
       axesHelper.visible = false
     }
   })
