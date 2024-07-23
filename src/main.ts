@@ -5,10 +5,12 @@ import { OrbitControls } from 'three/examples/jsm/Addons.js'
 import { AxesHelper, Clock } from 'three';
 import { Physics } from './utils/physics';
 import { XRPlanes } from 'three/examples/jsm/Addons.js';
+import { ARButton } from 'three/addons/webxr/ARButton.js';
 
 const init = async () => {
   const { scene, renderer } = sceneRenderer(Camera)
   Table().then((table) => scene.add(table))
+  document.body.appendChild(ARButton.createButton(renderer))
   // const table = await Table()
   // scene.add(table)
   const { handleFirstController, handleSecondController } = setupXRControllers(scene, renderer)
