@@ -2,7 +2,7 @@ import { sceneRenderer, spotLight, secondLight, Camera, pointLight } from './uti
 import { Floor, Room, Table, Cube } from './models'
 import { setupXRControllers } from './controllers'
 import { OrbitControls } from 'three/examples/jsm/Addons.js'
-import { AxesHelper, Clock } from 'three';
+import { AxesHelper, Clock, Mesh, MeshStandardMaterial, Object3DEventMap, PlaneGeometry } from 'three';
 import { Physics } from './utils/physics';
 import { XRPlanes } from 'three/examples/jsm/Addons.js';
 
@@ -17,12 +17,14 @@ const init = async () => {
 
   const xRPlanes = new XRPlanes(renderer)
   xRPlanes.addEventListener('planes-detected', (event) => {
-    event.target.children.forEach((plane, i) => {
-      if (!i) scene.add(plane)
+    // add objects to different planes
+    const planes = event.target.children
+    planes.forEach((plane) => {
+      plane.attach(Cube)
     })
   })
 
-  const objects = [Floor, Cube, Room]
+  const objects: Mesh<PlaneGeometry, MeshStandardMaterial, Object3DEventMap>[] = []
   objects.forEach((object) => {
     object.castShadow = true
     object.receiveShadow = true
