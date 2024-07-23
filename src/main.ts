@@ -16,8 +16,11 @@ const init = async () => {
   const axesHelper = new AxesHelper(5)
 
   const xRPlanes = new XRPlanes(renderer)
-  scene.add(xRPlanes)
-
+  xRPlanes.addEventListener('planes-detected', (event) => {
+    event.target.children.forEach((plane, i) => {
+      if (!i) scene.add(plane)
+    })
+  })
 
   const objects = [Floor, Cube, Room]
   objects.forEach((object) => {
