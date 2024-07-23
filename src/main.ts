@@ -2,9 +2,8 @@ import { sceneRenderer, spotLight, secondLight, Camera, pointLight } from './uti
 import { Floor, Room, Table, Cube } from './models'
 import { setupXRControllers } from './controllers'
 import { OrbitControls } from 'three/examples/jsm/Addons.js'
-import { AxesHelper, Clock, Mesh, MeshStandardMaterial, Object3DEventMap, PlaneGeometry } from 'three';
+import { AxesHelper, Clock } from 'three';
 import { Physics } from './utils/physics';
-import { XRPlanes } from 'three/examples/jsm/Addons.js';
 
 const init = async () => {
   const { scene, renderer } = sceneRenderer(Camera)
@@ -12,14 +11,12 @@ const init = async () => {
   const { handleFirstController, handleSecondController } = setupXRControllers(scene, renderer)
   const { dynamicBodies, world } = await Physics(Cube)
 
-  
+  // Box.scale.set(.3, .3, .3)
+
+  // add axes helper
   const axesHelper = new AxesHelper(5)
 
-  const xRPlanes = new XRPlanes(renderer)
-  const Cube2 = Cube.clone()
-  Cube2.position.set(0, 0, xRPlanes.position.z - 1)
-
-  const objects: Mesh<PlaneGeometry, MeshStandardMaterial, Object3DEventMap>[] = [Floor, Room, Cube, Cube2]
+  const objects = [Floor, Cube, Room]
   objects.forEach((object) => {
     object.castShadow = true
     object.receiveShadow = true
