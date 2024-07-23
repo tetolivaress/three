@@ -1,5 +1,5 @@
 import { sceneRenderer, spotLight, secondLight, Camera, pointLight } from './utils'
-import { Floor, Room, Table, Cube } from './models'
+import { Floor, Room, Table, Cube, Box } from './models'
 import { setupXRControllers } from './controllers'
 import { OrbitControls } from 'three/examples/jsm/Addons.js'
 import { AxesHelper, Clock } from 'three';
@@ -27,11 +27,13 @@ const init = async () => {
   planes[4].visible = false
   planes[5].visible = true
 
+  Box.position.set(planes[5].position.x, planes[5].position.y + 1, planes[5].position.z)
+
   scene.add(...planes)
 
 
 
-  const objects = [Floor, Cube, Room]
+  const objects = [Floor, Cube, Room, Box]
   objects.forEach((object) => {
     object.castShadow = true
     object.receiveShadow = true
