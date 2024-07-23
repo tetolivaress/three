@@ -39,7 +39,7 @@ const init = async () => {
   renderer.xr.addEventListener('sessionstart', () => {
     if (renderer.xr.isPresenting) {
       Floor.visible = false
-      // Room.visible = false
+      Room.visible = false
       axesHelper.visible = false
     }
   })
